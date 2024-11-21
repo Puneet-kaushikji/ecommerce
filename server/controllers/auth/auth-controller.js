@@ -47,6 +47,8 @@ const loginUser = async (req, res) => {
         message: "User doesn't exists! Please register first",
       });
 
+      console.log('1',checkUser);
+
     const checkPasswordMatch = await bcrypt.compare(
       password,
       checkUser.password
@@ -57,16 +59,20 @@ const loginUser = async (req, res) => {
         message: "Incorrect password! Please try again",
       });
 
-    // const token = jwt.sign(
-    //   {
-    //     id: checkUser._id,
-    //     role: checkUser.role,
-    //     email: checkUser.email,
-    //     userName: checkUser.userName,
-    //   },
-    //   "CLIENT_SECRET_KEY",
-    //   { expiresIn: "60m" }
-    // );
+      console.log('2',checkPasswordMatch);
+
+    const token = jwt.sign(
+      {
+        id: checkUser._id,
+        role: checkUser.role,
+        email: checkUser.email,
+        userName: checkUser.userName,
+      },
+      "CLIENT_SECRET_KEY",
+      { expiresIn: "60m" }
+    );
+
+    console.log('3', token);
 
     // res.cookie("token", token, { httpOnly: true, secure: true }).json({
     //   success: true,
@@ -83,7 +89,7 @@ const loginUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Logged in successfully",
-      // token,
+      token,
       user: {
         email: checkUser.email,
         role: checkUser.role,
